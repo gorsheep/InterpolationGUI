@@ -1142,17 +1142,33 @@ class ViewController: UIViewController {
         Beta = Float(textField2.text!)!
         Alpha = Float(textField1.text!)!
         
-        elimX(array1: data,array2: &arrayY, x: X);
-        elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
-        elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, y: Mach);
-        elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, y: Beta);
-        elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, y: Alpha);
+        if (Alpha < -4) || (Alpha > 12) {
+            label2.text = "ERROR: alpha out of range"
+        }
+        else if (Beta < -4) || (Beta > 4) {
+            label2.text = "ERROR: beta out of range"
+        }
+        else if (Mach < 0.2) || (Mach > 2.3) {
+            label2.text = "ERROR: mach out of range"
+        }
+        else if (Y < 0) || (Y > 11) {
+            label2.text = "ERROR: Y out of range"
+        }
+        else if (X < -4) || (X > 4) {
+            label2.text = "ERROR: X out of range"
+        }
+        else {
+            elimX(array1: data,array2: &arrayY, x: X);
+            elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
+            elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, y: Mach);
+            elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, y: Beta);
+            elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, y: Alpha);
+            label2.text = "mz = \(answer)"
+        }
         
         
-        label2.text = "mz = \(answer)"
     }
     
-
     
     
     //If you press anywhere else, removes all the extra UI (keyboard, droplist, etc.)
