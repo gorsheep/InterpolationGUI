@@ -12,12 +12,14 @@ import Foundation
 class Draw: UIView {
     
     var plotArray = [Int](repeating: 0, count: 374)
-    var axisArray = [Int](repeating: 0, count: 4)
+    var XaxisArray = [Int](repeating: 0, count: 4)
+    var YaxisArray = [Int](repeating: 0, count: 4)
     
-    init(frame: CGRect, data: [Int], axis: [Int]) {
+    init(frame: CGRect, data: [Int], Xaxis: [Int], Yaxis: [Int]) {
         super.init(frame: frame)
         self.plotArray = data
-        self.axisArray = axis
+        self.XaxisArray = Xaxis
+        self.YaxisArray = Yaxis
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -32,8 +34,8 @@ class Draw: UIView {
         context.setStrokeColor(UIColor.black.cgColor)
         
         //Create a path
-        context.move(to: CGPoint(x:axisArray[0], y:axisArray[1]))
-        context.addLine(to: CGPoint(x:axisArray[2], y:axisArray[3]))
+        context.move(to: CGPoint(x:XaxisArray[0], y:XaxisArray[1]))
+        context.addLine(to: CGPoint(x:XaxisArray[2], y:XaxisArray[3]))
         
         
         context.strokePath()
