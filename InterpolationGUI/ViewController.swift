@@ -10,6 +10,10 @@ import UIKit
 import Foundation
 
 
+var number = "someString"
+var points: [Int] = [50,50,70,70]
+var clicked: Bool = false
+
 
 class ViewController: UIViewController {
     
@@ -23,9 +27,13 @@ class ViewController: UIViewController {
     @IBOutlet var textField3: UITextField!
     @IBOutlet var textField4: UITextField!
     @IBOutlet var textField5: UITextField!
+    @IBOutlet var textField6: UITextField!
+    @IBOutlet var pickerView1: UIPickerView!
     
+    let vars = ["alpha","beta","mach","Y","X"]
+    var selectedVar: String?
     
-    
+    //Runs only 1 time when you first launch the app
     override func viewDidLoad() {
         super.viewDidLoad()
         textField1.keyboardType = UIKeyboardType.numbersAndPunctuation
@@ -33,7 +41,33 @@ class ViewController: UIViewController {
         textField3.keyboardType = UIKeyboardType.numbersAndPunctuation
         textField4.keyboardType = UIKeyboardType.numbersAndPunctuation
         textField5.keyboardType = UIKeyboardType.numbersAndPunctuation
+        createVarPicker()
+        createToolbar()
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    func createVarPicker() {
+        
+        let varPicker = UIPickerView()
+        varPicker.delegate = self
+        textField6.inputView = varPicker
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    func createToolbar() {
+        
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(ViewController.dismissKeyboard))
+        
+        toolBar.setItems([doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        
+        textField6.inputAccessoryView = toolBar
     }
 
     override func didReceiveMemoryWarning() {
@@ -1167,7 +1201,21 @@ class ViewController: UIViewController {
         }
         
         
+        
+        //var points: [Int] = [100,100,200,200]
+        points = [100,100,200,200]
+        
+        
+        let myView = Draw(frame: CGRect(x: 20, y: 516, width: 374, height: 200), data: points)
+        myView.backgroundColor = UIColor.darkGray
+        view.addSubview(myView)
+        
+        
+        
+        
     }
+    
+    
     
     
     
@@ -1178,5 +1226,28 @@ class ViewController: UIViewController {
     
 
 
+}
+
+
+
+extension ViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return vars.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return vars[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selectedVar = vars[row]
+        textField6.text = vars[row]
+    }
+    
 }
 
