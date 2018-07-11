@@ -12,10 +12,12 @@ import Foundation
 class Draw: UIView {
     
     var plotArray = [Int](repeating: 0, count: 374)
+    var axisArray = [Int](repeating: 0, count: 4)
     
-    init(frame: CGRect, data: [Int]) {
+    init(frame: CGRect, data: [Int], axis: [Int]) {
         super.init(frame: frame)
         self.plotArray = data
+        self.axisArray = axis
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -26,12 +28,12 @@ class Draw: UIView {
     override func draw(_ rect: CGRect) {
         //context is the object used for drawing
         guard let context = UIGraphicsGetCurrentContext() else { return }
-        context.setLineWidth(3)
-        context.setStrokeColor(UIColor.purple.cgColor)
+        context.setLineWidth(1)
+        context.setStrokeColor(UIColor.black.cgColor)
         
         //Create a path
-        context.move(to: CGPoint(x:plotArray[0], y:plotArray[1]))
-        context.addLine(to: CGPoint(x:plotArray[2], y:plotArray[3]))
+        context.move(to: CGPoint(x:axisArray[0], y:axisArray[1]))
+        context.addLine(to: CGPoint(x:axisArray[2], y:axisArray[3]))
         
         
         context.strokePath()

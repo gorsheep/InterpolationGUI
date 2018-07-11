@@ -12,6 +12,7 @@ import Foundation
 
 var number = "someString"
 var points: [Int] = [50,50,70,70]
+var Xaxis: [Int] = [1,101,374,101]
 var clicked: Bool = false
 
 
@@ -81,11 +82,6 @@ class ViewController: UIViewController {
         self.textField3.resignFirstResponder()
         self.textField4.resignFirstResponder()
         self.textField5.resignFirstResponder()
-        
-        
-        
-        
-        
         
         //Function that interpolates
         func interpol(a: Float, b: Float, c: Float, za: Float, zb: Float) -> Float {
@@ -1200,20 +1196,21 @@ class ViewController: UIViewController {
             label2.text = "mz = \(answer)"
         }
         
-        
-        
-        //var points: [Int] = [100,100,200,200]
-        points = [100,100,200,200]
-        
-        
-        let myView = Draw(frame: CGRect(x: 20, y: 516, width: 374, height: 200), data: points)
-        myView.backgroundColor = UIColor.darkGray
-        view.addSubview(myView)
-        
+        //Code that fills the array called 'points'
         
         
         
     }
+    
+    @IBAction func button2Pressed(_ sender: Any) {
+        points = [100,100,200,200]
+        
+        
+        let myView = Draw(frame: CGRect(x: 20, y: 516, width: 374, height: 201), data: points, axis: Xaxis)
+        myView.backgroundColor = UIColor(red:0.94, green:0.94, blue:0.94, alpha:1.0)
+        view.addSubview(myView)
+    }
+    
     
     
     
