@@ -31,7 +31,7 @@ class Draw: UIView {
         //context is the object used for drawing
         guard let context = UIGraphicsGetCurrentContext() else { return }
         context.setLineWidth(1)
-        context.setStrokeColor(UIColor.black.cgColor)
+        context.setStrokeColor(UIColor(red:0.65, green:0.65, blue:0.65, alpha:1.0).cgColor)
         
         //Draw the X-axis
         context.move(to: CGPoint(x:XaxisArray[0], y:XaxisArray[1]))
@@ -44,6 +44,9 @@ class Draw: UIView {
         context.strokePath()
         
         //Draw the plot
+        context.setStrokeColor(UIColor(red:0.24, green:0.25, blue:0.58, alpha:1.0).cgColor)
+        context.setLineJoin(_: CGLineJoin.round)        //does not affect anything
+        context.setLineWidth(1)
         context.move(to: CGPoint(x:plotArray[0][0], y:plotArray[0][1]))
         for i in 1 ... 373 {
             context.addLine(to: CGPoint(x:plotArray[i][0], y:plotArray[i][1]))

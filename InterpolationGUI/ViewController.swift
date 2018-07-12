@@ -393,7 +393,6 @@ class ViewController: UIViewController {
                 elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
                 elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: alpha[0]+deltaAlpha*Float(i));
                 plotArray[i]=answer
-                //print(plotArray[i])
             }
             Yaxis[0] = 93 ; Yaxis[1] = 1 ; Yaxis[2] = 93 ; Yaxis[3] = 201
             label3.text = "-4"
@@ -412,13 +411,12 @@ class ViewController: UIViewController {
                 integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
                 integerPositivePlotArray[i-1].round(.down)
                 points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
-                //print("points[\(i-1)] = \(points[i-1])")
             }
             
             var Xcoordinate: Float = scale*(-min(a: plotArray))
             Xcoordinate.round(.down)
             Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[3] = 201 - Int(Xcoordinate)
-            if Xaxis[1]<=0 {
+            if Xaxis[1]<=2 {                                //used to be <=0 but then changed to <=2 so that the plot looks nice
                 Xaxis[1] = 1
                 Xaxis[3] = 1
             }
@@ -452,7 +450,6 @@ class ViewController: UIViewController {
                 integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
                 integerPositivePlotArray[i-1].round(.down)
                 points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
-                print("points[\(i-1)] = \(points[i-1])")
             }
             
             
@@ -464,7 +461,6 @@ class ViewController: UIViewController {
                 elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
                 elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
                 plotArray[i]=answer
-                //print(plotArray[i])
             }
             Yaxis[0] = 1 ; Yaxis[1] = 1 ; Yaxis[2] = 1 ; Yaxis[3] = 201
             label3.text = "0.2"
@@ -483,13 +479,12 @@ class ViewController: UIViewController {
                 integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
                 integerPositivePlotArray[i-1].round(.down)
                 points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
-                print("points[\(i-1)] = \(points[i-1])")
             }
             
             var Xcoordinate: Float = scale*(-min(a: plotArray))
             Xcoordinate.round(.down)
             Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[3] = 201 - Int(Xcoordinate)
-            if Xaxis[1]<=0 {
+            if Xaxis[1]<=2 {
                 Xaxis[1] = 1
                 Xaxis[3] = 1
             }
@@ -524,13 +519,13 @@ class ViewController: UIViewController {
                 integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
                 integerPositivePlotArray[i-1].round(.down)
                 points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
-                print("points[\(i-1)] = \(points[i-1])")
             }
             
             var Xcoordinate: Float = scale*(-min(a: plotArray))
             Xcoordinate.round(.down)
             Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[3] = 201 - Int(Xcoordinate)
-            if Xaxis[1]<=0 {
+            print(Xaxis[1])
+            if Xaxis[1]<=2 {
                 Xaxis[1] = 1
                 Xaxis[3] = 1
             }
@@ -565,13 +560,12 @@ class ViewController: UIViewController {
                 integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
                 integerPositivePlotArray[i-1].round(.down)
                 points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
-                print("points[\(i-1)] = \(points[i-1])")
             }
             
             var Xcoordinate: Float = scale*(-min(a: plotArray))
             Xcoordinate.round(.down)
             Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[3] = 201 - Int(Xcoordinate)
-            if Xaxis[1]<=0 {
+            if Xaxis[1]<=2 {
                 Xaxis[1] = 1
                 Xaxis[3] = 1
             }
@@ -586,7 +580,7 @@ class ViewController: UIViewController {
         
     
         let myView = Draw(frame: CGRect(x: 20, y: 460, width: 374, height: 201), data: points, Xaxis: Xaxis, Yaxis: Yaxis)
-        myView.backgroundColor = UIColor(red:0.97, green:0.97, blue:0.97, alpha:1.0)
+        myView.backgroundColor = UIColor(red:1.0, green:1.0, blue:1.0, alpha:1.0)
         view.addSubview(myView)
         print(choice)
     }
