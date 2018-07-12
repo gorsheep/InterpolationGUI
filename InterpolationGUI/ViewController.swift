@@ -249,6 +249,8 @@ class ViewController: UIViewController {
     //Declaration of labels
     @IBOutlet var label1: UILabel!
     @IBOutlet var label2: UILabel!
+    @IBOutlet var label3: UILabel!
+    @IBOutlet var label4: UILabel!
     
     //Declaration of text boxes
     @IBOutlet var textField1: UITextField!
@@ -265,6 +267,8 @@ class ViewController: UIViewController {
     //Runs only 1 time when you first launch the app
     override func viewDidLoad() {
         super.viewDidLoad()
+        label3.text = ""
+        label4.text = ""
         textField1.keyboardType = UIKeyboardType.numbersAndPunctuation
         textField2.keyboardType = UIKeyboardType.numbersAndPunctuation
         textField3.keyboardType = UIKeyboardType.numbersAndPunctuation
@@ -366,6 +370,8 @@ class ViewController: UIViewController {
                 plotArray[i]=answer
             }
             Yaxis[0] = 93 ; Yaxis[1] = 1 ; Yaxis[2] = 93 ; Yaxis[3] = 201
+            label3.text = "-4"
+            label4.text = "12"
         case "beta":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: X);
@@ -376,6 +382,8 @@ class ViewController: UIViewController {
                 plotArray[i]=answer
             }
             Yaxis[0] = 187 ; Yaxis[1] = 1 ; Yaxis[2] = 187 ; Yaxis[3] = 201
+            label3.text = "-4"
+            label4.text = "4"
         case "mach":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: X);
@@ -386,6 +394,8 @@ class ViewController: UIViewController {
                 plotArray[i]=answer
             }
             Yaxis[0] = 1 ; Yaxis[1] = 1 ; Yaxis[2] = 1 ; Yaxis[3] = 201
+            label3.text = "0.2"
+            label4.text = "2.3"
         case "Y":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: X);
@@ -396,6 +406,8 @@ class ViewController: UIViewController {
                 plotArray[i]=answer
             }
             Yaxis[0] = 1 ; Yaxis[1] = 1 ; Yaxis[2] = 1 ; Yaxis[3] = 201
+            label3.text = "0"
+            label4.text = "11"
         case "X":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: x[0]+deltaX*Float(i));
@@ -406,13 +418,15 @@ class ViewController: UIViewController {
                 plotArray[i]=answer
             }
             Yaxis[0] = 187 ; Yaxis[1] = 1 ; Yaxis[2] = 187 ; Yaxis[3] = 201
+            label3.text = "-4"
+            label4.text = "4"
         default:
             print("ERROR")
         }
         
     
-        let myView = Draw(frame: CGRect(x: 20, y: 516, width: 374, height: 201), data: points, Xaxis: Xaxis, Yaxis: Yaxis)
-        myView.backgroundColor = UIColor(red:0.94, green:0.94, blue:0.94, alpha:1.0)
+        let myView = Draw(frame: CGRect(x: 20, y: 460, width: 374, height: 201), data: points, Xaxis: Xaxis, Yaxis: Yaxis)
+        myView.backgroundColor = UIColor(red:0.97, green:0.97, blue:0.97, alpha:1.0)
         view.addSubview(myView)
         print(choice)
     }
