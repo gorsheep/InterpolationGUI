@@ -306,6 +306,11 @@ class ViewController: UIViewController {
         textField3.keyboardType = UIKeyboardType.numbersAndPunctuation
         textField4.keyboardType = UIKeyboardType.numbersAndPunctuation
         textField5.keyboardType = UIKeyboardType.numbersAndPunctuation
+        textField1.autocorrectionType = .no
+        textField2.autocorrectionType = .no
+        textField3.autocorrectionType = .no
+        textField4.autocorrectionType = .no
+        textField5.autocorrectionType = .no
         createVarPicker()
         createToolbar()
     }
@@ -396,8 +401,6 @@ class ViewController: UIViewController {
         
     
     }
-    
-    
     
     
     
@@ -627,6 +630,24 @@ class ViewController: UIViewController {
     
     
     
+    @IBAction func button3Pressed(_ sender: Any) {
+        label2.text = ""
+        label3.text = ""
+        label4.text = ""
+        textField1.text = ""
+        textField2.text = ""
+        textField3.text = ""
+        textField4.text = ""
+        textField5.text = ""
+        
+        points = [[Int]](repeating: [Int](repeating: 0, count: 2), count: 374)
+        Xaxis = [Int](repeating: 0, count: 4)
+        Yaxis = [Int](repeating: 0, count: 4)
+        
+        let myView = Draw(frame: CGRect(x: 20, y: 460, width: 374, height: 201), data: points, Xaxis: Xaxis, Yaxis: Yaxis)
+        myView.backgroundColor = UIColor(red:1.0, green:1.0, blue:1.0, alpha:1.0)
+        view.addSubview(myView)
+    }
     
     
     
