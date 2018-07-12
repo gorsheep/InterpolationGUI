@@ -14,9 +14,10 @@ var plotArray = [Float](repeating: 0, count: 374)                              /
 var positivePlotArray = [Float](repeating: 0, count: 374)                      //array that contains raw data but starts from 0
 var integerPositivePlotArray = [Float](repeating: 0, count: 374)               //array that contains positive integers data
 var points = [[Int]](repeating: [Int](repeating: 0, count: 2), count: 374)     //array that contains transformed data
-var Xaxis: [Int] = [1,101,374,101]                                             //array that contains coordinates for the X-axis
+var Xaxis = [Int](repeating: 0, count: 4)                                      //array that contains coordinates for the X-axis
 var Yaxis = [Int](repeating: 0, count: 4)                                      //array that contains coordinates for the Y-axis
 var choice: String = ""                                                        //variable that contains a string from the pickerView
+var allGood: Bool = false                                                      //variable that checks that input is correct
 
 //Arrays with original data
 let alpha: [Float] = [-4,0,4,8,12]
@@ -292,8 +293,14 @@ class ViewController: UIViewController {
     //Runs only 1 time when you first launch the app
     override func viewDidLoad() {
         super.viewDidLoad()
+        label2.text = ""
         label3.text = ""
         label4.text = ""
+        textField1.text = ""
+        textField2.text = ""
+        textField3.text = ""
+        textField4.text = ""
+        textField5.text = ""
         textField1.keyboardType = UIKeyboardType.numbersAndPunctuation
         textField2.keyboardType = UIKeyboardType.numbersAndPunctuation
         textField3.keyboardType = UIKeyboardType.numbersAndPunctuation
@@ -340,40 +347,53 @@ class ViewController: UIViewController {
         self.textField3.resignFirstResponder()
         self.textField4.resignFirstResponder()
         self.textField5.resignFirstResponder()
-
+        
         //Fill the "data" array
         fillTheArray()
         
-        //Fill the variables for input values
-        X = Float(textField5.text!)!
-        Y = Float(textField4.text!)!
-        Mach = Float(textField3.text!)!
-        Beta = Float(textField2.text!)!
-        Alpha = Float(textField1.text!)!
+        if (textField1.text != "") && (textField2.text != "") && (textField3.text != "") && (textField4.text != "") && (textField5.text != "") {
+            
+            //Fill the variables for input values
+            X = Float(textField5.text!) ?? 666
+            Y = Float(textField4.text!) ?? 666
+            Mach = Float(textField3.text!) ?? 666
+            Beta = Float(textField2.text!) ?? 666
+            Alpha = Float(textField1.text!) ?? 666
+            
+            if (X != 666) && (Y != 666) && (Mach != 666) && (Beta != 666) && (Alpha != 666) {
+                if (Alpha < -4) || (Alpha > 12) {
+                    label2.text = "ERROR: alpha out of range"
+                }
+                else if (Beta < -4) || (Beta > 4) {
+                    label2.text = "ERROR: beta out of range"
+                }
+                else if (Mach < 0.2) || (Mach > 2.3) {
+                    label2.text = "ERROR: mach out of range"
+                }
+                else if (Y < 0) || (Y > 11) {
+                    label2.text = "ERROR: Y out of range"
+                }
+                else if (X < -4) || (X > 4) {
+                    label2.text = "ERROR: X out of range"
+                }
+                else {
+                    allGood = true
+                    elimX(array1: data,array2: &arrayY, x: X);
+                    elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
+                    elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: Mach);
+                    elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
+                    elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
+                    label2.text = "mz = \(answer)"
+                }
+            } else {
+                label2.text = "Please, enter numbers"
+            }
+            
+            
+        } else {
+            label2.text = "Please, enter all the values"
+        }
         
-        if (Alpha < -4) || (Alpha > 12) {
-            label2.text = "ERROR: alpha out of range"
-        }
-        else if (Beta < -4) || (Beta > 4) {
-            label2.text = "ERROR: beta out of range"
-        }
-        else if (Mach < 0.2) || (Mach > 2.3) {
-            label2.text = "ERROR: mach out of range"
-        }
-        else if (Y < 0) || (Y > 11) {
-            label2.text = "ERROR: Y out of range"
-        }
-        else if (X < -4) || (X > 4) {
-            label2.text = "ERROR: X out of range"
-        }
-        else {
-            elimX(array1: data,array2: &arrayY, x: X);
-            elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
-            elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: Mach);
-            elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
-            elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
-            label2.text = "mz = \(answer)"
-        }
     
     }
     
@@ -384,199 +404,218 @@ class ViewController: UIViewController {
     
     @IBAction func button2Pressed(_ sender: Any) {
         
-        switch choice {
-        case "alpha":
-            for i in 0 ... 373 {
-                elimX(array1: data,array2: &arrayY, x: X);
-                elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
-                elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: Mach);
-                elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
-                elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: alpha[0]+deltaAlpha*Float(i));
-                plotArray[i]=answer
+        if allGood == true {
+            switch choice {
+            case "alpha":
+                for i in 0 ... 373 {
+                    elimX(array1: data,array2: &arrayY, x: X);
+                    elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
+                    elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: Mach);
+                    elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
+                    elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: alpha[0]+deltaAlpha*Float(i));
+                    plotArray[i]=answer
+                }
+                Yaxis[0] = 93 ; Yaxis[1] = 1 ; Yaxis[2] = 93 ; Yaxis[3] = 201
+                label3.text = "-4"
+                label4.text = "12"
+                for i in 0 ... 373 {
+                    positivePlotArray[i] = plotArray[i]+(-min(a: plotArray))
+                }
+                print("min = \(min(a: positivePlotArray))")
+                print("max = \(max(a: positivePlotArray))")
+                var scale: Float
+                if max(a: positivePlotArray) == 0 {
+                    scale = 1
+                } else {
+                    scale = (200/max(a: positivePlotArray))
+                }
+                scale.round(.down)
+                print("scale = \(scale)")
+                
+                for i in 1 ... 374 {
+                    integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
+                    integerPositivePlotArray[i-1].round(.down)
+                    points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
+                }
+                
+                var Xcoordinate: Float = scale*(-min(a: plotArray))
+                Xcoordinate.round(.down)
+                Xaxis[0] = 1 ; Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[2] = 374;  Xaxis[3] = 201 - Int(Xcoordinate)
+                if Xaxis[1]<=2 {                                //used to be <=0 but then changed to <=2 so that the plot looks nice
+                    Xaxis[1] = 1
+                    Xaxis[3] = 1
+                }
+                if Xaxis[1]>201 {
+                    Xaxis[1] = 201
+                    Xaxis[3] = 201
+                }
+                
+                
+            case "beta":
+                for i in 0 ... 373 {
+                    elimX(array1: data,array2: &arrayY, x: X);
+                    elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
+                    elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: Mach);
+                    elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: beta[0]+deltaBeta*Float(i));
+                    elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
+                    plotArray[i]=answer
+                }
+                Yaxis[0] = 187 ; Yaxis[1] = 1 ; Yaxis[2] = 187 ; Yaxis[3] = 201
+                label3.text = "-4"
+                label4.text = "4"
+                for i in 0 ... 373 {
+                    positivePlotArray[i] = plotArray[i]+(-min(a: plotArray))
+                }
+                print("min = \(min(a: positivePlotArray))")
+                print("max = \(max(a: positivePlotArray))")
+                let scale: Float = 1
+                print("scale = \(scale)")
+                
+                for i in 1 ... 374 {
+                    integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
+                    integerPositivePlotArray[i-1].round(.down)
+                    points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
+                }
+                
+                
+            case "mach":
+                for i in 0 ... 373 {
+                    elimX(array1: data,array2: &arrayY, x: X);
+                    elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
+                    elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: mach[0]+deltaMach*Float(i));
+                    elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
+                    elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
+                    plotArray[i]=answer
+                }
+                Yaxis[0] = 1 ; Yaxis[1] = 1 ; Yaxis[2] = 1 ; Yaxis[3] = 201
+                label3.text = "0.2"
+                label4.text = "2.3"
+                for i in 0 ... 373 {
+                    positivePlotArray[i] = plotArray[i]+(-min(a: plotArray))
+                }
+                print("min = \(min(a: positivePlotArray))")
+                print("max = \(max(a: positivePlotArray))")
+                var scale: Float
+                if max(a: positivePlotArray) == 0 {
+                    scale = 1
+                } else {
+                    scale = (200/max(a: positivePlotArray))
+                }
+                scale.round(.down)
+                print("scale = \(scale)")
+                
+                for i in 1 ... 374 {
+                    integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
+                    integerPositivePlotArray[i-1].round(.down)
+                    points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
+                }
+                
+                var Xcoordinate: Float = scale*(-min(a: plotArray))
+                Xcoordinate.round(.down)
+                Xaxis[0] = 1 ; Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[2] = 374;  Xaxis[3] = 201 - Int(Xcoordinate)
+                if Xaxis[1]<=2 {
+                    Xaxis[1] = 1
+                    Xaxis[3] = 1
+                }
+                if Xaxis[1]>201 {
+                    Xaxis[1] = 201
+                    Xaxis[3] = 201
+                }
+                
+            case "Y":
+                for i in 0 ... 373 {
+                    elimX(array1: data,array2: &arrayY, x: X);
+                    elimY(array1: arrayY, array2: &arrayMach, g: y, y: y[0]+deltaY*Float(i));
+                    elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: Mach);
+                    elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
+                    elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
+                    plotArray[i]=answer
+                }
+                Yaxis[0] = 1 ; Yaxis[1] = 1 ; Yaxis[2] = 1 ; Yaxis[3] = 201
+                label3.text = "0"
+                label4.text = "11"
+                for i in 0 ... 373 {
+                    positivePlotArray[i] = plotArray[i]+(-min(a: plotArray))
+                }
+                print("min = \(min(a: positivePlotArray))")
+                print("max = \(max(a: positivePlotArray))")
+                var scale: Float
+                if max(a: positivePlotArray) == 0 {
+                    scale = 1
+                } else {
+                    scale = (200/max(a: positivePlotArray))
+                }
+                scale.round(.down)
+                print("scale = \(scale)")
+                
+                for i in 1 ... 374 {
+                    integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
+                    integerPositivePlotArray[i-1].round(.down)
+                    points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
+                }
+                
+                var Xcoordinate: Float = scale*(-min(a: plotArray))
+                Xcoordinate.round(.down)
+                Xaxis[0] = 1 ; Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[2] = 374;  Xaxis[3] = 201 - Int(Xcoordinate)
+                print(Xaxis[1])
+                if Xaxis[1]<=2 {
+                    Xaxis[1] = 1
+                    Xaxis[3] = 1
+                }
+                if Xaxis[1]>201 {
+                    Xaxis[1] = 201
+                    Xaxis[3] = 201
+                }
+                
+            case "X":
+                for i in 0 ... 373 {
+                    elimX(array1: data,array2: &arrayY, x: x[0]+deltaX*Float(i));
+                    elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
+                    elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: Mach);
+                    elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
+                    elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
+                    plotArray[i]=answer
+                }
+                Yaxis[0] = 187 ; Yaxis[1] = 1 ; Yaxis[2] = 187 ; Yaxis[3] = 201
+                label3.text = "-4"
+                label4.text = "4"
+                for i in 0 ... 373 {
+                    positivePlotArray[i] = plotArray[i]+(-min(a: plotArray))
+                }
+                print("min = \(min(a: positivePlotArray))")
+                print("max = \(max(a: positivePlotArray))")
+                var scale: Float
+                if max(a: positivePlotArray) == 0 {
+                    scale = 1
+                } else {
+                    scale = (200/max(a: positivePlotArray))
+                }
+                scale.round(.down)
+                print("scale = \(scale)")
+                
+                for i in 1 ... 374 {
+                    integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
+                    integerPositivePlotArray[i-1].round(.down)
+                    points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
+                }
+                
+                var Xcoordinate: Float = scale*(-min(a: plotArray))
+                Xcoordinate.round(.down)
+                Xaxis[0] = 1 ; Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[2] = 374;  Xaxis[3] = 201 - Int(Xcoordinate)
+                if Xaxis[1]<=2 {
+                    Xaxis[1] = 1
+                    Xaxis[3] = 1
+                }
+                if Xaxis[1]>201 {
+                    Xaxis[1] = 201
+                    Xaxis[3] = 201
+                }
+                
+            default:
+                print("ERROR")
             }
-            Yaxis[0] = 93 ; Yaxis[1] = 1 ; Yaxis[2] = 93 ; Yaxis[3] = 201
-            label3.text = "-4"
-            label4.text = "12"
-            for i in 0 ... 373 {
-                positivePlotArray[i] = plotArray[i]+(-min(a: plotArray))
-            }
-            print("min = \(min(a: positivePlotArray))")
-            print("max = \(max(a: positivePlotArray))")
-            var scale: Float
-            scale = (200/max(a: positivePlotArray))
-            scale.round(.down)
-            print("scale = \(scale)")
-            
-            for i in 1 ... 374 {
-                integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
-                integerPositivePlotArray[i-1].round(.down)
-                points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
-            }
-            
-            var Xcoordinate: Float = scale*(-min(a: plotArray))
-            Xcoordinate.round(.down)
-            Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[3] = 201 - Int(Xcoordinate)
-            if Xaxis[1]<=2 {                                //used to be <=0 but then changed to <=2 so that the plot looks nice
-                Xaxis[1] = 1
-                Xaxis[3] = 1
-            }
-            if Xaxis[1]>201 {
-                Xaxis[1] = 201
-                Xaxis[3] = 201
-            }
-            
-            
-        case "beta":
-            for i in 0 ... 373 {
-                elimX(array1: data,array2: &arrayY, x: X);
-                elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
-                elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: Mach);
-                elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: beta[0]+deltaBeta*Float(i));
-                elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
-                plotArray[i]=answer
-            }
-            Yaxis[0] = 187 ; Yaxis[1] = 1 ; Yaxis[2] = 187 ; Yaxis[3] = 201
-            label3.text = "-4"
-            label4.text = "4"
-            for i in 0 ... 373 {
-                positivePlotArray[i] = plotArray[i]+(-min(a: plotArray))
-            }
-            print("min = \(min(a: positivePlotArray))")
-            print("max = \(max(a: positivePlotArray))")
-            let scale: Float = 1
-            print("scale = \(scale)")
-            
-            for i in 1 ... 374 {
-                integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
-                integerPositivePlotArray[i-1].round(.down)
-                points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
-            }
-            
-            
-        case "mach":
-            for i in 0 ... 373 {
-                elimX(array1: data,array2: &arrayY, x: X);
-                elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
-                elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: mach[0]+deltaMach*Float(i));
-                elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
-                elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
-                plotArray[i]=answer
-            }
-            Yaxis[0] = 1 ; Yaxis[1] = 1 ; Yaxis[2] = 1 ; Yaxis[3] = 201
-            label3.text = "0.2"
-            label4.text = "2.3"
-            for i in 0 ... 373 {
-                positivePlotArray[i] = plotArray[i]+(-min(a: plotArray))
-            }
-            print("min = \(min(a: positivePlotArray))")
-            print("max = \(max(a: positivePlotArray))")
-            var scale: Float
-            scale = (200/max(a: positivePlotArray))
-            scale.round(.down)
-            print("scale = \(scale)")
-            
-            for i in 1 ... 374 {
-                integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
-                integerPositivePlotArray[i-1].round(.down)
-                points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
-            }
-            
-            var Xcoordinate: Float = scale*(-min(a: plotArray))
-            Xcoordinate.round(.down)
-            Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[3] = 201 - Int(Xcoordinate)
-            if Xaxis[1]<=2 {
-                Xaxis[1] = 1
-                Xaxis[3] = 1
-            }
-            if Xaxis[1]>201 {
-                Xaxis[1] = 201
-                Xaxis[3] = 201
-            }
-            
-        case "Y":
-            for i in 0 ... 373 {
-                elimX(array1: data,array2: &arrayY, x: X);
-                elimY(array1: arrayY, array2: &arrayMach, g: y, y: y[0]+deltaY*Float(i));
-                elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: Mach);
-                elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
-                elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
-                plotArray[i]=answer
-            }
-            Yaxis[0] = 1 ; Yaxis[1] = 1 ; Yaxis[2] = 1 ; Yaxis[3] = 201
-            label3.text = "0"
-            label4.text = "11"
-            for i in 0 ... 373 {
-                positivePlotArray[i] = plotArray[i]+(-min(a: plotArray))
-            }
-            print("min = \(min(a: positivePlotArray))")
-            print("max = \(max(a: positivePlotArray))")
-            var scale: Float
-            scale = (200/max(a: positivePlotArray))
-            scale.round(.down)
-            print("scale = \(scale)")
-            
-            for i in 1 ... 374 {
-                integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
-                integerPositivePlotArray[i-1].round(.down)
-                points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
-            }
-            
-            var Xcoordinate: Float = scale*(-min(a: plotArray))
-            Xcoordinate.round(.down)
-            Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[3] = 201 - Int(Xcoordinate)
-            print(Xaxis[1])
-            if Xaxis[1]<=2 {
-                Xaxis[1] = 1
-                Xaxis[3] = 1
-            }
-            if Xaxis[1]>201 {
-                Xaxis[1] = 201
-                Xaxis[3] = 201
-            }
-            
-        case "X":
-            for i in 0 ... 373 {
-                elimX(array1: data,array2: &arrayY, x: x[0]+deltaX*Float(i));
-                elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
-                elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: Mach);
-                elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
-                elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
-                plotArray[i]=answer
-            }
-            Yaxis[0] = 187 ; Yaxis[1] = 1 ; Yaxis[2] = 187 ; Yaxis[3] = 201
-            label3.text = "-4"
-            label4.text = "4"
-            for i in 0 ... 373 {
-                positivePlotArray[i] = plotArray[i]+(-min(a: plotArray))
-            }
-            print("min = \(min(a: positivePlotArray))")
-            print("max = \(max(a: positivePlotArray))")
-            var scale: Float
-            scale = (200/max(a: positivePlotArray))
-            scale.round(.down)
-            print("scale = \(scale)")
-            
-            for i in 1 ... 374 {
-                integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
-                integerPositivePlotArray[i-1].round(.down)
-                points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
-            }
-            
-            var Xcoordinate: Float = scale*(-min(a: plotArray))
-            Xcoordinate.round(.down)
-            Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[3] = 201 - Int(Xcoordinate)
-            if Xaxis[1]<=2 {
-                Xaxis[1] = 1
-                Xaxis[3] = 1
-            }
-            if Xaxis[1]>201 {
-                Xaxis[1] = 201
-                Xaxis[3] = 201
-            }
-            
-        default:
-            print("ERROR")
         }
+        
         
     
         let myView = Draw(frame: CGRect(x: 20, y: 460, width: 374, height: 201), data: points, Xaxis: Xaxis, Yaxis: Yaxis)
