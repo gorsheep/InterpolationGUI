@@ -325,16 +325,77 @@ class ViewController: UIViewController {
         view.endEditing(true)
     }
     
+    @objc func activate1() {
+        self.textField1.becomeFirstResponder()
+    }
+    
+    @objc func activate2() {
+        self.textField2.becomeFirstResponder()
+    }
+    
+    @objc func activate3() {
+        self.textField3.becomeFirstResponder()
+    }
+    
+    @objc func activate4() {
+        self.textField4.becomeFirstResponder()
+    }
+    
+    @objc func activate5() {
+        self.textField5.becomeFirstResponder()
+    }
+    
+    
     func createToolbar() {
         
         let toolBar = UIToolbar()
+        let toolBar1 = UIToolbar()
+        let toolBar2 = UIToolbar()
+        let toolBar3 = UIToolbar()
+        let toolBar4 = UIToolbar()
+        let toolBar5 = UIToolbar()
+        
         toolBar.sizeToFit()
+        toolBar1.sizeToFit()
+        toolBar2.sizeToFit()
+        toolBar3.sizeToFit()
+        toolBar4.sizeToFit()
+        toolBar5.sizeToFit()
         
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(ViewController.dismissKeyboard))
+        
+        let nextButton1 = UIBarButtonItem(title: "❯", style: .plain, target: self, action: #selector(ViewController.activate2))
+        let previousButton2 = UIBarButtonItem(title: "❮", style: .plain, target: self, action: #selector(ViewController.activate1))
+        let nextButton2 = UIBarButtonItem(title: "     ❯", style: .plain, target: self, action: #selector(ViewController.activate3))
+        let previousButton3 = UIBarButtonItem(title: "❮", style: .plain, target: self, action: #selector(ViewController.activate2))
+        let nextButton3 = UIBarButtonItem(title: "     ❯", style: .plain, target: self, action: #selector(ViewController.activate4))
+        let previousButton4 = UIBarButtonItem(title: "❮", style: .plain, target: self, action: #selector(ViewController.activate3))
+        let nextButton4 = UIBarButtonItem(title: "     ❯", style: .plain, target: self, action: #selector(ViewController.activate5))
+        let previousButton5 = UIBarButtonItem(title: "❮", style: .plain, target: self, action: #selector(ViewController.activate4))
         
         toolBar.setItems([doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         
+        toolBar1.setItems([nextButton1], animated: false)
+        toolBar1.isUserInteractionEnabled = true
+        
+        toolBar2.setItems([previousButton2, nextButton2], animated: false)
+        toolBar2.isUserInteractionEnabled = true
+        
+        toolBar3.setItems([previousButton3, nextButton3], animated: false)
+        toolBar3.isUserInteractionEnabled = true
+        
+        toolBar4.setItems([previousButton4, nextButton4], animated: false)
+        toolBar4.isUserInteractionEnabled = true
+        
+        toolBar5.setItems([previousButton5], animated: false)
+        toolBar5.isUserInteractionEnabled = true
+        
+        textField1.inputAccessoryView = toolBar1
+        textField2.inputAccessoryView = toolBar2
+        textField3.inputAccessoryView = toolBar3
+        textField4.inputAccessoryView = toolBar4
+        textField5.inputAccessoryView = toolBar5
         textField6.inputAccessoryView = toolBar
     }
 
