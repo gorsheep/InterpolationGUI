@@ -10,11 +10,13 @@ import UIKit
 import Foundation
 
 
-var plotArray = [Float](repeating: 0, count: 374)            //array that contains raw data
-var points = [Int](repeating: 0, count: 374)                 //array that contains transformed data
-var Xaxis: [Int] = [1,101,374,101]                           //array that contains coordinates for the X-axis
-var Yaxis = [Int](repeating: 0, count: 4)                    //array that contains coordinates for the Y-axis
-var choice: String = ""                                      //variable that contains a string from the pickerView
+var plotArray = [Float](repeating: 0, count: 374)                              //array that contains raw data
+var positivePlotArray = [Float](repeating: 0, count: 374)                      //array that contains raw data but starts from 0
+var integerPositivePlotArray = [Float](repeating: 0, count: 374)               //array that contains positive integers data
+var points = [[Int]](repeating: [Int](repeating: 0, count: 2), count: 374)     //array that contains transformed data
+var Xaxis: [Int] = [1,101,374,101]                                             //array that contains coordinates for the X-axis
+var Yaxis = [Int](repeating: 0, count: 4)                                      //array that contains coordinates for the Y-axis
+var choice: String = ""                                                        //variable that contains a string from the pickerView
 
 //Arrays with original data
 let alpha: [Float] = [-4,0,4,8,12]
@@ -240,7 +242,30 @@ func elimAlpha(array1: [Float], answer: inout Float, g: [Float], alpha: Float) {
 }
 
 
+//Function that finds the max number in an array
+func max(a: [Float]) -> Float {
+    let size = a.count
+    var max = a[0];
+    for i in 1 ... size-1 {
+        if (a[i]>max) {
+            max=a[i];
+        }
+    }
+    return max;
+}
 
+
+//Function that finds the min number in an array
+func min(a: [Float]) -> Float {
+    let size = a.count
+    var min = a[0];
+    for i in 1 ... size-1 {
+        if (a[i]<min) {
+            min=a[i];
+        }
+    }
+    return min;
+}
 
 
 
@@ -372,6 +397,23 @@ class ViewController: UIViewController {
             Yaxis[0] = 93 ; Yaxis[1] = 1 ; Yaxis[2] = 93 ; Yaxis[3] = 201
             label3.text = "-4"
             label4.text = "12"
+            for i in 0 ... 373 {
+                positivePlotArray[i] = plotArray[i]+(-min(a: plotArray))
+            }
+            print("min = \(min(a: positivePlotArray))")
+            print("max = \(max(a: positivePlotArray))")
+            var scale: Float
+            scale = (200/max(a: positivePlotArray))
+            scale.round(.down)
+            print("scale = \(scale)")
+            
+            for i in 1 ... 374 {
+                integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
+                integerPositivePlotArray[i-1].round(.down)
+                points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
+                print("points[\(i-1)] = \(points[i-1])")
+            }
+            
         case "beta":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: X);
@@ -384,6 +426,21 @@ class ViewController: UIViewController {
             Yaxis[0] = 187 ; Yaxis[1] = 1 ; Yaxis[2] = 187 ; Yaxis[3] = 201
             label3.text = "-4"
             label4.text = "4"
+            for i in 0 ... 373 {
+                positivePlotArray[i] = plotArray[i]+(-min(a: plotArray))
+            }
+            print("min = \(min(a: positivePlotArray))")
+            print("max = \(max(a: positivePlotArray))")
+            let scale: Float = 1
+            print("scale = \(scale)")
+            
+            for i in 1 ... 374 {
+                integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
+                integerPositivePlotArray[i-1].round(.down)
+                points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
+                print("points[\(i-1)] = \(points[i-1])")
+            }
+            
         case "mach":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: X);
@@ -396,6 +453,23 @@ class ViewController: UIViewController {
             Yaxis[0] = 1 ; Yaxis[1] = 1 ; Yaxis[2] = 1 ; Yaxis[3] = 201
             label3.text = "0.2"
             label4.text = "2.3"
+            for i in 0 ... 373 {
+                positivePlotArray[i] = plotArray[i]+(-min(a: plotArray))
+            }
+            print("min = \(min(a: positivePlotArray))")
+            print("max = \(max(a: positivePlotArray))")
+            var scale: Float
+            scale = (200/max(a: positivePlotArray))
+            scale.round(.down)
+            print("scale = \(scale)")
+            
+            for i in 1 ... 374 {
+                integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
+                integerPositivePlotArray[i-1].round(.down)
+                points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
+                print("points[\(i-1)] = \(points[i-1])")
+            }
+            
         case "Y":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: X);
@@ -408,6 +482,23 @@ class ViewController: UIViewController {
             Yaxis[0] = 1 ; Yaxis[1] = 1 ; Yaxis[2] = 1 ; Yaxis[3] = 201
             label3.text = "0"
             label4.text = "11"
+            for i in 0 ... 373 {
+                positivePlotArray[i] = plotArray[i]+(-min(a: plotArray))
+            }
+            print("min = \(min(a: positivePlotArray))")
+            print("max = \(max(a: positivePlotArray))")
+            var scale: Float
+            scale = (200/max(a: positivePlotArray))
+            scale.round(.down)
+            print("scale = \(scale)")
+            
+            for i in 1 ... 374 {
+                integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
+                integerPositivePlotArray[i-1].round(.down)
+                points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
+                print("points[\(i-1)] = \(points[i-1])")
+            }
+            
         case "X":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: x[0]+deltaX*Float(i));
@@ -420,6 +511,23 @@ class ViewController: UIViewController {
             Yaxis[0] = 187 ; Yaxis[1] = 1 ; Yaxis[2] = 187 ; Yaxis[3] = 201
             label3.text = "-4"
             label4.text = "4"
+            for i in 0 ... 373 {
+                positivePlotArray[i] = plotArray[i]+(-min(a: plotArray))
+            }
+            print("min = \(min(a: positivePlotArray))")
+            print("max = \(max(a: positivePlotArray))")
+            var scale: Float
+            scale = (200/max(a: positivePlotArray))
+            scale.round(.down)
+            print("scale = \(scale)")
+            
+            for i in 1 ... 374 {
+                integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
+                integerPositivePlotArray[i-1].round(.down)
+                points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
+                print("points[\(i-1)] = \(points[i-1])")
+            }
+            
         default:
             print("ERROR")
         }

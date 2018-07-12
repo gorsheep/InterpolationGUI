@@ -11,11 +11,11 @@ import Foundation
 
 class Draw: UIView {
     
-    var plotArray = [Int](repeating: 0, count: 374)
+    var plotArray = [[Int]](repeating: [Int](repeating: 0, count: 2), count: 374)
     var XaxisArray = [Int](repeating: 0, count: 4)
     var YaxisArray = [Int](repeating: 0, count: 4)
     
-    init(frame: CGRect, data: [Int], Xaxis: [Int], Yaxis: [Int]) {
+    init(frame: CGRect, data: [[Int]], Xaxis: [Int], Yaxis: [Int]) {
         super.init(frame: frame)
         self.plotArray = data
         self.XaxisArray = Xaxis
@@ -42,6 +42,14 @@ class Draw: UIView {
         context.move(to: CGPoint(x:YaxisArray[0], y:YaxisArray[1]))
         context.addLine(to: CGPoint(x:YaxisArray[2], y:YaxisArray[3]))
         context.strokePath()
+        
+        //Draw the plot
+        context.move(to: CGPoint(x:plotArray[0][0], y:plotArray[0][1]))
+        for i in 1 ... 373 {
+            context.addLine(to: CGPoint(x:plotArray[i][0], y:plotArray[i][1]))
+        }
+        context.strokePath()
+        
         
     }
     
