@@ -10,31 +10,34 @@ import UIKit
 import Foundation
 
 
-//var data = [[Float]](repeating: [Float](repeating: 0, count: 5), count: 870)   //the origianl data array
-var plotArray = [Float](repeating: 0, count: 374)                              //array that contains raw data
-var points = [Int](repeating: 0, count: 374)                                   //array that contains transformed data
-var Xaxis: [Int] = [1,101,374,101]                                             //array that contains coordinates for the X-axis
-var Yaxis = [Int](repeating: 0, count: 4)                                      //array that contains coordinates for the Y-axis
-var choice: String = ""                                                        //variable that contains a string from the pickerView
+var plotArray = [Float](repeating: 0, count: 374)            //array that contains raw data
+var points = [Int](repeating: 0, count: 374)                 //array that contains transformed data
+var Xaxis: [Int] = [1,101,374,101]                           //array that contains coordinates for the X-axis
+var Yaxis = [Int](repeating: 0, count: 4)                    //array that contains coordinates for the Y-axis
+var choice: String = ""                                      //variable that contains a string from the pickerView
 
-let alpha: [Float] = [-4,0,4,8,12]                                             //arrays with original data
+//Arrays with original data
+let alpha: [Float] = [-4,0,4,8,12]
 let beta: [Float] = [-4,-2,0,2,4]
 let mach: [Float] = [0.2,0.8,1.3,1.7,2,2.3]
 let y: [Float] = [0.0000,0.0910,0.2180,0.3340,0.4560,0.5720,0.6990,0.8210,0.9350,1.0530,1.1780,1.2950,1.4160,1.5420,1.6560,1.7710,1.9010,2.0120,2.1320,2.2560,2.3730,2.4920,3.0000,4.0000,5.0000,6.0000,7.0000,9.0000,11.0000]
 let x: [Float] = [-4,0,4]
 
+//Arrays for storing temporary data
 var arrayY = [[Float]](repeating: [Float](repeating: 0, count: 5), count: 870)
 var arrayMach = [[Float]](repeating: [Float](repeating: 0, count: 5), count: 30)
 var arrayBeta = [[Float]](repeating: [Float](repeating: 0, count: 5), count: 5)
 var arrayAlpha = [Float](repeating: 0, count: 5)
 var answer: Float = 3.14
 
+//Variables for storing input
 var X: Float = 0
 var Y: Float = 0
 var Mach: Float = 0
 var Beta: Float = 0
 var Alpha: Float = 0
 
+//Variables for storing delta-values (for plotting)
 let deltaAlpha: Float = (alpha[4]-alpha[0])/374
 let deltaBeta: Float = (beta[4]-beta[0])/374
 let deltaMach: Float = (mach[5]-mach[0])/374
@@ -123,19 +126,19 @@ func elimY(array1: [[Float]], array2: inout [[Float]], g: [Float], y: Float) {
 
 
 //Function that eliminates Mach
-func elimMach(array1: [[Float]], array2: inout [[Float]], g: [Float], y: Float) {
+func elimMach(array1: [[Float]], array2: inout [[Float]], g: [Float], mach: Float) {
     var a, b, za, zb: Float; a=0; b=0; za=0; zb=0;
     var q=0
     var isPresent = false
     for i in 0 ... 5 {
-        if y==g[i] {
+        if mach==g[i] {
             isPresent=true
             q=i
         }
     }
     if isPresent==false {
         for i in 1 ... 5 {
-            if y>g[i-1] && y<g[i] {
+            if mach>g[i-1] && mach<g[i] {
                 a=g[i-1]
                 b=g[i]
                 q=i
@@ -159,7 +162,7 @@ func elimMach(array1: [[Float]], array2: inout [[Float]], g: [Float], y: Float) 
             for j in 0 ... 4 {
                 za=array1[i][j]
                 zb=array1[i+5][j]
-                array2[k][j]=interpol(a: a, b: b, c: y, za: za, zb: zb)
+                array2[k][j]=interpol(a: a, b: b, c: mach, za: za, zb: zb)
             }
             k=k+1
         }
@@ -168,19 +171,19 @@ func elimMach(array1: [[Float]], array2: inout [[Float]], g: [Float], y: Float) 
 
 
 //Function that eliminates Beta
-func elimBeta(array1: [[Float]], array2: inout [Float], g: [Float], y: Float) {
+func elimBeta(array1: [[Float]], array2: inout [Float], g: [Float], beta: Float) {
     var a, b, za, zb: Float; a=0; b=0; za=0; zb=0;
     var q=0
     var isPresent = false
     for i in 0 ... 4 {
-        if y==g[i] {
+        if beta==g[i] {
             isPresent=true
             q=i
         }
     }
     if isPresent==false {
         for i in 1 ... 4 {
-            if y>g[i-1] && y<g[i] {
+            if beta>g[i-1] && beta<g[i] {
                 a=g[i-1]
                 b=g[i]
                 q=i
@@ -198,26 +201,26 @@ func elimBeta(array1: [[Float]], array2: inout [Float], g: [Float], y: Float) {
         for j in 0 ... 4 {
             za=array1[q-1][j]
             zb=array1[q][j]
-            array2[j]=interpol(a: a, b: b, c: y, za: za, zb: zb)
+            array2[j]=interpol(a: a, b: b, c: beta, za: za, zb: zb)
         }
     }
 }
 
 
 //Function that eliminates Alpha
-func elimAlpha(array1: [Float], answer: inout Float, g: [Float], y: Float) {
+func elimAlpha(array1: [Float], answer: inout Float, g: [Float], alpha: Float) {
     var a, b, za, zb: Float; a=0; b=0; za=0; zb=0;
     var q=0
     var isPresent = false
     for i in 0 ... 4 {
-        if y==g[i] {
+        if alpha==g[i] {
             isPresent=true
             q=i
         }
     }
     if isPresent==false {
         for i in 1 ... 4 {
-            if y>g[i-1] && y<g[i] {
+            if alpha>g[i-1] && alpha<g[i] {
                 a=g[i-1]
                 b=g[i]
                 q=i
@@ -232,7 +235,7 @@ func elimAlpha(array1: [Float], answer: inout Float, g: [Float], y: Float) {
     if isPresent==false {
         za=array1[q-1]
         zb=array1[q]
-        answer=interpol(a: a, b: b, c: y, za: za, zb: zb)
+        answer=interpol(a: a, b: b, c: alpha, za: za, zb: zb)
     }
 }
 
@@ -312,6 +315,7 @@ class ViewController: UIViewController {
         //Fill the "data" array
         fillTheArray()
         
+        //Fill the variables for input values
         X = Float(textField5.text!)!
         Y = Float(textField4.text!)!
         Mach = Float(textField3.text!)!
@@ -336,9 +340,9 @@ class ViewController: UIViewController {
         else {
             elimX(array1: data,array2: &arrayY, x: X);
             elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
-            elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, y: Mach);
-            elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, y: Beta);
-            elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, y: Alpha);
+            elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: Mach);
+            elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
+            elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
             label2.text = "mz = \(answer)"
         }
     
@@ -356,45 +360,45 @@ class ViewController: UIViewController {
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: X);
                 elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
-                elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, y: Mach);
-                elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, y: Beta);
-                elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, y: alpha[0]+deltaAlpha*Float(i));
+                elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: Mach);
+                elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
+                elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: alpha[0]+deltaAlpha*Float(i));
                 plotArray[i]=answer
             }
         case "beta":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: X);
                 elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
-                elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, y: Mach);
-                elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, y: beta[0]+deltaBeta*Float(i));
-                elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, y: Alpha);
+                elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: Mach);
+                elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: beta[0]+deltaBeta*Float(i));
+                elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
                 plotArray[i]=answer
             }
         case "mach":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: X);
                 elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
-                elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, y: mach[0]+deltaMach*Float(i));
-                elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, y: Beta);
-                elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, y: Alpha);
+                elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: mach[0]+deltaMach*Float(i));
+                elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
+                elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
                 plotArray[i]=answer
             }
         case "Y":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: X);
                 elimY(array1: arrayY, array2: &arrayMach, g: y, y: y[0]+deltaY*Float(i));
-                elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, y: Mach);
-                elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, y: Beta);
-                elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, y: Alpha);
+                elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: Mach);
+                elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
+                elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
                 plotArray[i]=answer
             }
         case "X":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: x[0]+deltaX*Float(i));
                 elimY(array1: arrayY, array2: &arrayMach, g: y, y: Y);
-                elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, y: Mach);
-                elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, y: Beta);
-                elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, y: Alpha);
+                elimMach(array1: arrayMach, array2: &arrayBeta, g: mach, mach: Mach);
+                elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
+                elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
                 plotArray[i]=answer
             }
         default:
