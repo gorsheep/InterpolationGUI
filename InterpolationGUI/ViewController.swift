@@ -393,6 +393,7 @@ class ViewController: UIViewController {
                 elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
                 elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: alpha[0]+deltaAlpha*Float(i));
                 plotArray[i]=answer
+                //print(plotArray[i])
             }
             Yaxis[0] = 93 ; Yaxis[1] = 1 ; Yaxis[2] = 93 ; Yaxis[3] = 201
             label3.text = "-4"
@@ -411,8 +412,21 @@ class ViewController: UIViewController {
                 integerPositivePlotArray[i-1] = positivePlotArray[i-1]*scale
                 integerPositivePlotArray[i-1].round(.down)
                 points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
-                print("points[\(i-1)] = \(points[i-1])")
+                //print("points[\(i-1)] = \(points[i-1])")
             }
+            
+            var Xcoordinate: Float = scale*(-min(a: plotArray))
+            Xcoordinate.round(.down)
+            Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[3] = 201 - Int(Xcoordinate)
+            if Xaxis[1]<=0 {
+                Xaxis[1] = 1
+                Xaxis[3] = 1
+            }
+            if Xaxis[1]>201 {
+                Xaxis[1] = 201
+                Xaxis[3] = 201
+            }
+            
             
         case "beta":
             for i in 0 ... 373 {
@@ -441,6 +455,7 @@ class ViewController: UIViewController {
                 print("points[\(i-1)] = \(points[i-1])")
             }
             
+            
         case "mach":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: X);
@@ -449,6 +464,7 @@ class ViewController: UIViewController {
                 elimBeta(array1: arrayBeta, array2: &arrayAlpha, g: beta, beta: Beta);
                 elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
                 plotArray[i]=answer
+                //print(plotArray[i])
             }
             Yaxis[0] = 1 ; Yaxis[1] = 1 ; Yaxis[2] = 1 ; Yaxis[3] = 201
             label3.text = "0.2"
@@ -468,6 +484,18 @@ class ViewController: UIViewController {
                 integerPositivePlotArray[i-1].round(.down)
                 points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
                 print("points[\(i-1)] = \(points[i-1])")
+            }
+            
+            var Xcoordinate: Float = scale*(-min(a: plotArray))
+            Xcoordinate.round(.down)
+            Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[3] = 201 - Int(Xcoordinate)
+            if Xaxis[1]<=0 {
+                Xaxis[1] = 1
+                Xaxis[3] = 1
+            }
+            if Xaxis[1]>201 {
+                Xaxis[1] = 201
+                Xaxis[3] = 201
             }
             
         case "Y":
@@ -499,6 +527,18 @@ class ViewController: UIViewController {
                 print("points[\(i-1)] = \(points[i-1])")
             }
             
+            var Xcoordinate: Float = scale*(-min(a: plotArray))
+            Xcoordinate.round(.down)
+            Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[3] = 201 - Int(Xcoordinate)
+            if Xaxis[1]<=0 {
+                Xaxis[1] = 1
+                Xaxis[3] = 1
+            }
+            if Xaxis[1]>201 {
+                Xaxis[1] = 201
+                Xaxis[3] = 201
+            }
+            
         case "X":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: x[0]+deltaX*Float(i));
@@ -526,6 +566,18 @@ class ViewController: UIViewController {
                 integerPositivePlotArray[i-1].round(.down)
                 points[i-1]=[i,201-Int(integerPositivePlotArray[i-1]+1)]
                 print("points[\(i-1)] = \(points[i-1])")
+            }
+            
+            var Xcoordinate: Float = scale*(-min(a: plotArray))
+            Xcoordinate.round(.down)
+            Xaxis[1] = 201 - Int(Xcoordinate) ; Xaxis[3] = 201 - Int(Xcoordinate)
+            if Xaxis[1]<=0 {
+                Xaxis[1] = 1
+                Xaxis[3] = 1
+            }
+            if Xaxis[1]>201 {
+                Xaxis[1] = 201
+                Xaxis[3] = 201
             }
             
         default:
