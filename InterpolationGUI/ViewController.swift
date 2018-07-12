@@ -365,6 +365,7 @@ class ViewController: UIViewController {
                 elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: alpha[0]+deltaAlpha*Float(i));
                 plotArray[i]=answer
             }
+            Yaxis[0] = 93 ; Yaxis[1] = 1 ; Yaxis[2] = 93 ; Yaxis[3] = 201
         case "beta":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: X);
@@ -374,6 +375,7 @@ class ViewController: UIViewController {
                 elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
                 plotArray[i]=answer
             }
+            Yaxis[0] = 187 ; Yaxis[1] = 1 ; Yaxis[2] = 187 ; Yaxis[3] = 201
         case "mach":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: X);
@@ -383,6 +385,7 @@ class ViewController: UIViewController {
                 elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
                 plotArray[i]=answer
             }
+            Yaxis[0] = 1 ; Yaxis[1] = 1 ; Yaxis[2] = 1 ; Yaxis[3] = 201
         case "Y":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: X);
@@ -392,6 +395,7 @@ class ViewController: UIViewController {
                 elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
                 plotArray[i]=answer
             }
+            Yaxis[0] = 1 ; Yaxis[1] = 1 ; Yaxis[2] = 1 ; Yaxis[3] = 201
         case "X":
             for i in 0 ... 373 {
                 elimX(array1: data,array2: &arrayY, x: x[0]+deltaX*Float(i));
@@ -401,6 +405,7 @@ class ViewController: UIViewController {
                 elimAlpha(array1: arrayAlpha, answer: &answer, g: alpha, alpha: Alpha);
                 plotArray[i]=answer
             }
+            Yaxis[0] = 187 ; Yaxis[1] = 1 ; Yaxis[2] = 187 ; Yaxis[3] = 201
         default:
             print("ERROR")
         }

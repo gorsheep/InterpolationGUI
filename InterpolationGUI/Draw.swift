@@ -33,11 +33,14 @@ class Draw: UIView {
         context.setLineWidth(1)
         context.setStrokeColor(UIColor.black.cgColor)
         
-        //Create a path
+        //Draw the X-axis
         context.move(to: CGPoint(x:XaxisArray[0], y:XaxisArray[1]))
         context.addLine(to: CGPoint(x:XaxisArray[2], y:XaxisArray[3]))
+        context.strokePath()
         
-        
+        //Draw the Y-axis
+        context.move(to: CGPoint(x:YaxisArray[0], y:YaxisArray[1]))
+        context.addLine(to: CGPoint(x:YaxisArray[2], y:YaxisArray[3]))
         context.strokePath()
         
     }
